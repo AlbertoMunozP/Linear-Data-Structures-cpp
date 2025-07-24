@@ -2,39 +2,36 @@
 #define TADLISTACIRCULAR_H_INCLUDED
 #include <cassert>
 
-//LISTA CIRCULAR SIMPLEMENTE ENLAZADA
 
 template <typename T> class ListaCir {
-    struct nodo; // declaración adelantada privada
+    struct nodo; 
     public:
-        typedef nodo* posicion; // posición de un elemento
-        ListaCir(); // constructor, requiere ctor. T()
-        ListaCir(const ListaCir<T>& l); // constructor de copia, requier ctor. T()
-        ListaCir<T>& operator =(const ListaCir<T>& l); // asignación entre listas
+        typedef nodo* posicion; 
+        ListaCir();
+        ListaCir(const ListaCir<T>& l);
+        ListaCir<T>& operator =(const ListaCir<T>& l);
         void insertar(const T& x, posicion p);
         void eliminar(posicion p);
-        const T& elemento(posicion p) const; // acceso a elto, lectura
-        T& elemento(posicion p); // acceso a elto, lectura/escritura
-        posicion buscar(const T& x) const; // T requiere operador ==
-        posicion inipos() const; // devuelve L
+        const T& elemento(posicion p) const;
+        T& elemento(posicion p);
+        posicion buscar(const T& x) const;
+        posicion inipos() const;
         posicion siguiente(posicion p) const;
         posicion anterior(posicion p) const;
-        ~ListaCir(); // destructor
+        ~ListaCir(); 
     private:
         struct nodo {
             T elto;
             nodo *sig;
             nodo(const T& e, nodo* s = 0): elto(e), sig(s) {}
         };
-    nodo* L; // lista doblemente enlazada de nodos
+    nodo* L; 
     const posicion POS_NULA = 0;
 
     void copiar(const ListaCir<T>& l);
 };
 
-// Método privado
 template <typename T> void ListaCir<T>::copiar(const ListaCir<T> &l) {
-    // Copiar elementos de l
     nodo* q = L;
     for (nodo* r = l.L->sig; r; r = r->sig) {
         q-> sig =new nodo (r->elto);
@@ -50,8 +47,8 @@ template <typename T> inline ListaCir<T>::ListaCir(const ListaCir<T>& l) {
 }
 
 template <typename T> ListaCir<T>& ListaCir<T>::operator =(const ListaCir<T>& l) {
-    if (this != &l) { // evitar autoasignación
-        this->~ListaCir(); // vaciar la lista actual
+    if (this != &l) {
+        this->~ListaCir();
         copiar(l);
     }
     return *this;
@@ -71,7 +68,6 @@ template <typename T> void ListaCir<T>::eliminar(ListaCir<T>::posicion p) {
     nodo* q = p->sig;
     p->sig = q->sig;
     delete q;
-    // el nodo siguiente queda en la posición p
 }
 
 template <typename T> inline const T& ListaCir<T>::elemento(ListaCir<T>::posicion p) const {
@@ -90,7 +86,7 @@ template <typename T> typename ListaCir<T>::posicion ListaCir<T>::buscar(const T
             encontrado = true;
         else q = q->sig;
     }
-    if (q->sig == L && q->elto != x) q = POS_NULA; //POS_NULA
+    if (q->sig == L && q->elto != x) q = POS_NULA; 
     return q;
 }
 
@@ -109,7 +105,6 @@ template <typename T> inline typename ListaCir<T>::posicion ListaCir<T>::anterio
     return q;
 }
 
-// Destructor: Vacía la lista y destruye el nodo cabecera
 template <typename T> ListaCir<T>::~ListaCir() {
     nodo* q;
     while (L->sig != L) {
@@ -121,4 +116,4 @@ template <typename T> ListaCir<T>::~ListaCir() {
 }
 
 
-#endif // TADLISTACIRCULAR_H_INCLUDED
+#endif 
